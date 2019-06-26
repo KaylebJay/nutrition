@@ -22,8 +22,11 @@ minetest.register_privilege("health_bypass","Can always survive without health p
 -- A simple formspec that makes users click to take a "break"
 nutrition.breakform = function(player)
   minetest.show_formspec(player,"nutrition:breakform","size[3,3]button[0.5,0.5;2,1;break;Take a break]button_exit[0.5,1.5;2,1;exit;Done]")
-  hb.change_hudbar(player,"tiredness",hb.get_hudbar_state(player,"tiredness").value+1)
+  -- hb.change_hudbar(player,"tiredness",hb.get_hudbar_state(player,"tiredness").value+1)
 end
+minetest.register_on_player_receive_fields(function(player,formname,fields)
+if formname=="nutrition:breakform" and fields["break"]==true then hb.change_hudbar(player,"tiredness",hb.get_hudbar_state(player,"tiredness").value+1) end
+end)
 
 -- Counter: makes the user more tired by increasing "tiredness" every 10 mins (600s)
 -- I don't know what the opposite of "tiredness" is. If you know, please tell me.
