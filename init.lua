@@ -17,7 +17,7 @@ minetest.register_chatcommand("break",{
 })
 
 -- Privilege
-minetest.register_privilege("nobreak","Can survive without getting tired")
+minetest.register_privilege("health_bypass","Can always survive without health problems.")
 
 -- A simple formspec that makes users click to take a "break"
 nutrition.breakform = function(player)
@@ -33,7 +33,10 @@ minetest.register_globalstep(function(dtime)
   if timer >= 600 then
   timer = 0
   for _,player in ipairs(minetest.get_connected_players()) do
-    -- To be continued (I'm qiite busy at the moment).
+    if not minetest.get_player_privs(player:get_player_name()).health_bypass then
+      hb.change_hudbar(player,"tiredness",hb.get_hudbar_state(player,"tiredness").value-1)
+      if hb.get_hudbar_state(player,"tiredness").value==0 then nutrition.breakform(player) end
+    end
   end
   end
 end)
