@@ -1,10 +1,9 @@
 -- Init and registration
-hb.register_hudbar("tiredness",0xFFFFFF,"Tiredness",,12,12,false)
+hb.register_hudbar("tiredness",0xFFFFFF,"Tiredness",12,12,false)
 
 -- Init hudbar for new users
 minetest.register_on_joinplayer(function(player)
 hb.init_hudbar(player,"tiredness",12)
-)
 
 -- Chatcommand: take a break
 minetest.register_chatcommand("break",{
@@ -26,7 +25,7 @@ nutrition.breakform = function(player)
 end
 minetest.register_on_player_receive_fields(function(player,formname,fields)
 if formname=="nutrition:breakform" and fields["break"]==true then hb.change_hudbar(player,"tiredness",hb.get_hudbar_state(player,"tiredness").value+1) end
-end)
+end
 
 -- Counter: makes the user more tired by increasing "tiredness" every 10 mins (600s)
 -- I don't know what the opposite of "tiredness" is. If you know, please tell me.
@@ -42,4 +41,4 @@ minetest.register_globalstep(function(dtime)
     end
   end
   end
-end)
+end
